@@ -1,0 +1,183 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-serif: 'Playfair Display', Georgia, serif;
+    --font-cormorant: 'Cormorant Garamond', Georgia, serif;
+    --font-handwriting: 'Caveat', cursive;
+    --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+  }
+}
+
+.font-serif-title {
+  font-family: var(--font-serif);
+}
+
+.font-editorial {
+  font-family: var(--font-cormorant);
+}
+
+.font-script {
+  font-family: var(--font-handwriting);
+}
+
+.font-sans-body {
+  font-family: var(--font-sans);
+}
+
+/* Smooth ambient floating animations */
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(2deg);
+  }
+}
+
+@keyframes pulse-soft {
+  0%, 100% {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+}
+
+.animate-float-slow {
+  animation: float-slow 7s ease-in-out infinite;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 3s ease-in-out infinite;
+}
+
+/* 3D Realistic Physical Book Page Turning */
+.perspective-book {
+  perspective: 2500px;
+  perspective-origin: 50% 50%;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+@keyframes flipLeafNext {
+  0% {
+    transform: rotateY(0deg);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  }
+  50% {
+    box-shadow: -20px 10px 40px rgba(0, 0, 0, 0.35);
+  }
+  100% {
+    transform: rotateY(-180deg);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  }
+}
+
+@keyframes flipLeafPrev {
+  0% {
+    transform: rotateY(0deg);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  }
+  50% {
+    box-shadow: 20px 10px 40px rgba(0, 0, 0, 0.35);
+  }
+  100% {
+    transform: rotateY(180deg);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  }
+}
+
+@keyframes flipShadow {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.35;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes flipCoverOpen {
+  0% {
+    transform: rotateY(0deg);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  }
+  50% {
+    box-shadow: -25px 15px 50px rgba(0, 0, 0, 0.5);
+  }
+  100% {
+    transform: rotateY(-180deg);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  }
+}
+
+@keyframes flipCoverClose {
+  0% {
+    transform: rotateY(-180deg);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  }
+  50% {
+    box-shadow: 25px 15px 50px rgba(0, 0, 0, 0.5);
+  }
+  100% {
+    transform: rotateY(0deg);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  }
+}
+
+.animate-flip-cover-open {
+  transform-origin: left center;
+  animation: flipCoverOpen 850ms cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.animate-flip-cover-close {
+  transform-origin: left center;
+  animation: flipCoverClose 850ms cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.animate-flip-leaf-next {
+  transform-origin: left center;
+  animation: flipLeafNext 700ms cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.animate-flip-leaf-prev {
+  transform-origin: right center;
+  animation: flipLeafPrev 700ms cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.animate-flip-shadow {
+  animation: flipShadow 700ms ease-in-out forwards;
+}
+
+.animate-flip-shadow-cover {
+  animation: flipShadow 850ms ease-in-out forwards;
+}
+
+/* Custom scrollbar for letter and modal */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(244, 238, 230, 0.6);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(190, 75, 105, 0.3);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(190, 75, 105, 0.6);
+}

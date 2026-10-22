@@ -1,0 +1,6 @@
+{
+  "name": "Amour - Dedicatoria de Amor",
+  "description": "Una experiencia romántica interactiva con carta en sobre lacrado, contador de tiempo juntos, recuerdos, música ambiental y editor en vivo.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
