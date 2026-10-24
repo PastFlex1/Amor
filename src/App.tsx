@@ -4,20 +4,30 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { Sparkles } from 'lucide-react';
+import { Sparkles, Heart } from 'lucide-react';
 import { LoveStory } from './types';
 import { DEFAULT_LOVE_STORY } from './utils/defaultData';
 import { generateShareUrl } from './utils/storage';
 import { audioEngine } from './utils/audioEngine';
-import { FloatingPetals } from './components/FloatingPetals';
+import { CosmicStarsBackground } from './components/CosmicStarsBackground';
+import { IntroSpecialModal } from './components/IntroSpecialModal';
 import { HeaderBar } from './components/HeaderBar';
+import { HeroSection } from './components/HeroSection';
+import { TimeTogetherCounter } from './components/TimeTogetherCounter';
+import { InteractiveLoveLetter } from './components/InteractiveLoveLetter';
+import { PhotoGallerySection } from './components/PhotoGallerySection';
 import { LoveBook } from './components/LoveBook';
+import { ReasonsWhyILoveYou } from './components/ReasonsWhyILoveYou';
+import { LoveCouponsSection } from './components/LoveCouponsSection';
+import { FinalSurpriseSection } from './components/FinalSurpriseSection';
+import { FloatingAudioPlayer } from './components/FloatingAudioPlayer';
 import { EditorModal, TabType } from './components/EditorModal';
 import { FutureTimelineModal } from './components/FutureTimelineModal';
 import { saveStoryToCloud, loadStoryFromCloud, subscribeToStoryInCloud } from './utils/firebase';
 
 export default function App() {
   const [story, setStory] = useState<LoveStory>(DEFAULT_LOVE_STORY);
+  const [showIntro, setShowIntro] = useState(true);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [editorInitialTab, setEditorInitialTab] = useState<TabType>('book_months');
@@ -28,17 +38,14 @@ export default function App() {
 
   // Real-time synchronization exclusively with Firebase Cloud Firestore
   useEffect(() => {
-    // 1. Initial fetch from Firebase cloud
     loadStoryFromCloud().then((cloudStory) => {
       if (cloudStory) {
         setStory(cloudStory);
       } else {
-        // First-time initialization in the cloud
         saveStoryToCloud(DEFAULT_LOVE_STORY);
       }
     });
 
-    // 2. Real-time subscription so partner sees updates immediately across devices
     const unsubscribe = subscribeToStoryInCloud('main_story', (updatedStory) => {
       if (updatedStory) {
         setStory(updatedStory);
@@ -47,6 +54,14 @@ export default function App() {
 
     return () => unsubscribe();
   }, []);
+
+  // Handle entering from the intro modal (starts ambient music)
+  const handleEnterFromIntro = () => {
+    setShowIntro(false);
+    audioEngine.play().then((playing) => {
+      if (playing) setIsAudioPlaying(true);
+    });
+  };
 
   // Sync state with audio engine
   const handleToggleAudio = async () => {
@@ -69,7 +84,6 @@ export default function App() {
         setIsFullscreen(false);
       }
     } catch {
-      // Fallback state if browser limits native fullscreen
       setIsFullscreen((prev) => !prev);
     }
   };
@@ -127,7 +141,7 @@ export default function App() {
     }
   };
 
-  // Handle coupon redemption inside the book
+  // Handle coupon redemption
   const handleRedeemCoupon = (couponId: string) => {
     const updatedCoupons = story.coupons.map((c) => {
       if (c.id === couponId) {
@@ -152,11 +166,14 @@ export default function App() {
 
   const handleShare = () => {
     const url = generateShareUrl(story);
-    navigator.clipboard.writeText(url).then(() => {
-      showToast('¡Enlace del libro copiado al portapapeles!');
-    }).catch(() => {
-      prompt('Copia este enlace para enviar a Dayana:', url);
-    });
+    navigator.clipboard
+      .writeText(url)
+      .then(() => {
+        showToast('¡Enlace de la dedicatoria copiado al portapapeles!');
+      })
+      .catch(() => {
+        prompt('Copia este enlace para compartir:', url);
+      });
   };
 
   const showToast = (msg: string) => {
@@ -168,19 +185,33 @@ export default function App() {
     story.receiverName !== 'Dayana Estefania Cuascota Cuascota';
 
   return (
-    <div className="relative min-h-[100dvh] min-h-screen w-full overflow-x-hidden bg-[#FAF6F0] text-stone-800 font-sans-body selection:bg-rose-200 selection:text-rose-900 flex flex-col justify-between">
-      {/* Interactive floating petals and click heart particles */}
-      <FloatingPetals />
+    <div className="relative min-h-[100dvh] min-h-screen w-full overflow-x-hidden bg-[#07030d] text-slate-100 font-sans-body selection:bg-pink-500/30 selection:text-pink-200 flex flex-col justify-between">
+      {/* Intro Overlay: "Tengo algo especial para ti..." */}
+      {showIntro && (
+        <IntroSpecialModal
+          partnerName={story.receiverName}
+          onEnter={handleEnterFromIntro}
+        />
+      )}
 
-      {/* Toast notification */}
+      {/* Cosmic background with twinkling stars, drifting particles & floating glowing hearts */}
+      <CosmicStarsBackground />
+
+      {/* Floating Audio Player Widget (Always Accessible on bottom right) */}
+      <FloatingAudioPlayer
+        isPlaying={isAudioPlaying}
+        onToggle={handleToggleAudio}
+      />
+
+      {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed top-20 right-6 z-50 bg-stone-900/95 text-white px-5 py-3 rounded-2xl shadow-xl flex items-center gap-2.5 text-xs font-semibold animate-fadeIn border border-rose-500/30">
-          <Sparkles className="w-4 h-4 text-rose-400" />
+        <div className="fixed top-20 right-6 z-50 bg-[#16072b]/95 text-white px-5 py-3 rounded-2xl shadow-[0_0_25px_rgba(236,72,153,0.4)] flex items-center gap-2.5 text-xs font-semibold animate-fadeIn border border-pink-500/40 backdrop-blur-xl">
+          <Sparkles className="w-4 h-4 text-pink-400" />
           <span>{toastMessage}</span>
         </div>
       )}
 
-      {/* Top Header Bar (hidden when in fullscreen to maximize book area) */}
+      {/* Top Header Navigation Bar (Hidden in Fullscreen) */}
       {!isFullscreen && (
         <HeaderBar
           partnerName={story.receiverName}
@@ -195,8 +226,52 @@ export default function App() {
         />
       )}
 
-      {/* Main Focus: Purely The Interactive Love Book */}
-      <main className="flex-1 flex flex-col justify-center">
+      {/* Main Content Sections */}
+      <main className="flex-1 flex flex-col space-y-12 sm:space-y-16">
+        {/* Section 1: Hero Dedication */}
+        <HeroSection
+          story={story}
+          isAudioPlaying={isAudioPlaying}
+          onToggleAudio={handleToggleAudio}
+          onExploreClick={() => {
+            const el = document.getElementById('libro');
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+          }}
+        />
+
+        {/* Section Divider */}
+        <div className="w-48 h-[1px] bg-gradient-to-r from-transparent via-purple-500/40 to-transparent mx-auto" />
+
+        {/* Section 2: Real-time Love Counter (Days, Hours, Minutes, Seconds) */}
+        <TimeTogetherCounter
+          anniversaryDate={story.anniversaryDate}
+          senderName={story.senderName}
+          receiverName={story.receiverName}
+        />
+
+        {/* Section Divider */}
+        <div className="w-48 h-[1px] bg-gradient-to-r from-transparent via-pink-500/40 to-transparent mx-auto" />
+
+        {/* Section 3: Sealed Love Letter & Wax Stamp */}
+        <InteractiveLoveLetter
+          letter={story.letter}
+          senderName={story.senderName}
+          receiverName={story.receiverName}
+        />
+
+        {/* Section Divider */}
+        <div className="w-48 h-[1px] bg-gradient-to-r from-transparent via-purple-500/40 to-transparent mx-auto" />
+
+        {/* Section 4: Photo Gallery with Polaroid Frames & Touch Effects */}
+        <PhotoGallerySection
+          months={story.months}
+          partnerName={story.receiverName}
+        />
+
+        {/* Section Divider */}
+        <div className="w-48 h-[1px] bg-gradient-to-r from-transparent via-pink-500/40 to-transparent mx-auto" />
+
+        {/* Section 5: The Interactive 12-Month Love Book */}
         <LoveBook
           story={story}
           onOpenEditor={handleOpenEditor}
@@ -208,18 +283,54 @@ export default function App() {
           isFullscreen={isFullscreen}
           onToggleFullscreen={handleToggleFullscreen}
         />
+
+        {/* Section Divider */}
+        <div className="w-48 h-[1px] bg-gradient-to-r from-transparent via-purple-500/40 to-transparent mx-auto" />
+
+        {/* Section 6: Reasons Why I Love You */}
+        <ReasonsWhyILoveYou
+          reasons={story.reasons}
+          partnerName={story.receiverName}
+        />
+
+        {/* Section Divider */}
+        <div className="w-48 h-[1px] bg-gradient-to-r from-transparent via-pink-500/40 to-transparent mx-auto" />
+
+        {/* Section 7: Love Coupons */}
+        <LoveCouponsSection
+          coupons={story.coupons}
+          onRedeemCoupon={handleRedeemCoupon}
+          partnerName={story.receiverName}
+        />
+
+        {/* Section Divider */}
+        <div className="w-48 h-[1px] bg-gradient-to-r from-transparent via-purple-500/40 to-transparent mx-auto" />
+
+        {/* Section 8: Final Surprise Button with Hearts, Stars & Romantic Decree */}
+        <FinalSurpriseSection
+          partnerName={story.receiverName}
+          senderName={story.senderName}
+        />
       </main>
 
-      {/* Clean, discreet footer (hidden in fullscreen) */}
+      {/* Romantic Footer */}
       {!isFullscreen && (
-        <footer className="py-4 px-6 text-center text-xs text-stone-400 border-t border-rose-100/60 flex items-center justify-center gap-1.5">
-          <span>Hecho con amor para</span>
-          <span className="font-semibold text-rose-900">{story.receiverName}</span>
-          <span>· 1 Año Juntos (12 Meses)</span>
+        <footer className="py-8 px-6 text-center text-xs text-purple-300/70 border-t border-purple-500/20 flex flex-col sm:flex-row items-center justify-center gap-2 relative z-10 backdrop-blur-md bg-[#07020d]/80">
+          <div className="flex items-center gap-1.5">
+            <span>Hecho con todo mi amor para</span>
+            <span className="font-semibold text-pink-300">
+              {story.receiverName}
+            </span>
+          </div>
+          <span className="hidden sm:inline">·</span>
+          <span className="flex items-center gap-1 text-purple-200">
+            <span>Nuestro pequeño universo infinito</span>
+            <Heart className="w-3.5 h-3.5 fill-pink-500 text-pink-500" />
+          </span>
         </footer>
       )}
 
-      {/* Future Timeline Modal (Option B: Starlight Celestial Experience) */}
+      {/* Future Timeline Modal */}
       {isFutureOpen && (
         <FutureTimelineModal
           milestones={story.futureMilestones || []}

@@ -1048,31 +1048,31 @@ export const LoveBook: React.FC<LoveBookProps> = ({
 
       {/* Header Banner (only when NOT in fullscreen) */}
       {!isFs && (
-        <div className="text-center space-y-2 sm:space-y-3 mb-4 sm:mb-8 px-2">
-          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-rose-100/80 border border-rose-200/80 text-rose-900 text-[11px] sm:text-xs font-semibold tracking-wider uppercase shadow-xs">
-            <BookOpen className="w-3.5 h-3.5 text-rose-600" />
+        <div className="text-center space-y-2 sm:space-y-3 mb-4 sm:mb-8 px-2 relative z-10">
+          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-purple-950/70 border border-purple-500/40 text-pink-300 text-[11px] sm:text-xs font-semibold tracking-wider uppercase shadow-xs">
+            <BookOpen className="w-3.5 h-3.5 text-pink-400" />
             <span>Libro Conmemorativo · 1 Año Juntos</span>
           </div>
 
-          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-serif-title font-bold text-stone-900 tracking-tight leading-tight">
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-serif-title font-bold text-white tracking-tight leading-tight">
             Nuestra Historia en 12 Capítulos
           </h2>
 
-          <p className="text-stone-600 text-xs sm:text-sm lg:text-base max-w-2xl mx-auto font-sans-body">
+          <p className="text-slate-300 text-xs sm:text-sm lg:text-base max-w-2xl mx-auto font-sans-body">
             Pasa las páginas mes a mes para revivir cada uno de los momentos más hermosos que vivimos juntos,
-            <span className="font-semibold text-rose-950 block sm:inline"> Dayana Estefania Cuascota Cuascota</span>.
+            <span className="font-semibold text-pink-300 block sm:inline"> Dayana Estefania Cuascota Cuascota</span>.
           </p>
         </div>
       )}
 
       {/* Fullscreen Top Control Bar (when in fullscreen) */}
       {isFs && (
-        <div className="flex items-center justify-between gap-2 sm:gap-4 pb-3 sm:pb-4 border-b border-rose-900/60 max-w-6xl w-full mx-auto text-white shrink-0">
+        <div className="flex items-center justify-between gap-2 sm:gap-4 pb-3 sm:pb-4 border-b border-purple-900/60 max-w-6xl w-full mx-auto text-white shrink-0">
           <div className="flex items-center gap-2 sm:gap-2.5 truncate mr-2">
-            <span className="font-serif-title text-base sm:text-xl font-bold text-amber-200 truncate">
+            <span className="font-serif-title text-base sm:text-xl font-bold text-pink-200 truncate">
               Amour · Primer Año
             </span>
-            <span className="text-xs text-rose-300 font-editorial italic hidden sm:inline">
+            <span className="text-xs text-purple-300 font-editorial italic hidden sm:inline">
               Para {story.receiverName}
             </span>
           </div>
@@ -1080,18 +1080,18 @@ export const LoveBook: React.FC<LoveBookProps> = ({
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <button
               onClick={onToggleAudio}
-              className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-xs text-rose-200 flex items-center gap-1.5 transition-colors cursor-pointer"
+              className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-purple-900/60 hover:bg-purple-800/80 border border-purple-500/30 text-xs text-pink-200 flex items-center gap-1.5 transition-colors cursor-pointer"
             >
-              {isAudioPlaying ? <Volume2 className="w-3.5 h-3.5 text-rose-400 animate-pulse" /> : <VolumeX className="w-3.5 h-3.5 text-stone-400" />}
+              {isAudioPlaying ? <Volume2 className="w-3.5 h-3.5 text-pink-400 animate-pulse" /> : <VolumeX className="w-3.5 h-3.5 text-slate-400" />}
               <span className="hidden sm:inline">{isAudioPlaying ? 'Música On' : 'Música'}</span>
             </button>
 
             <button
               onClick={toggleFullscreen}
-              className="px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-amber-400/20 hover:bg-amber-400/30 border border-amber-300/60 text-amber-200 text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-sm cursor-pointer"
+              className="px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-pink-900/40 hover:bg-pink-800/60 border border-pink-400/50 text-pink-200 text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-sm cursor-pointer"
               title="Salir de pantalla completa (ESC)"
             >
-              <Minimize2 className="w-3.5 h-3.5 text-amber-300" />
+              <Minimize2 className="w-3.5 h-3.5 text-pink-300" />
               <span className="hidden sm:inline">Salir</span>
             </button>
           </div>
@@ -1100,13 +1100,13 @@ export const LoveBook: React.FC<LoveBookProps> = ({
 
       {/* Quick Month Navigation Ribbon */}
       <div className={`flex items-center justify-start sm:justify-center overflow-x-auto py-2 px-1 sm:px-2 no-scrollbar max-w-full ${isFs ? 'my-2 sm:my-3 shrink-0' : 'mb-4 sm:mb-8'}`}>
-        <div className="inline-flex items-center gap-1 sm:gap-1.5 p-1 sm:p-1.5 bg-white/95 backdrop-blur-md rounded-2xl border border-rose-200/80 shadow-sm shrink-0">
+        <div className="inline-flex items-center gap-1 sm:gap-1.5 p-1 sm:p-1.5 bg-[#140628]/95 backdrop-blur-xl rounded-2xl border border-purple-500/40 shadow-lg shrink-0">
           <button
             onClick={() => goToPage(0)}
             className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-medium transition-all shrink-0 cursor-pointer ${
               currentPage === 0
-                ? 'bg-rose-900 text-white shadow-xs font-semibold'
-                : 'text-stone-600 hover:bg-rose-50'
+                ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-sm font-semibold'
+                : 'text-purple-200 hover:bg-purple-900/60'
             }`}
           >
             Portada
@@ -1116,14 +1116,14 @@ export const LoveBook: React.FC<LoveBookProps> = ({
             onClick={() => goToPage(1)}
             className={`px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-medium transition-all shrink-0 cursor-pointer ${
               currentPage === 1
-                ? 'bg-rose-900 text-white shadow-xs font-semibold'
-                : 'text-stone-600 hover:bg-rose-50'
+                ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-sm font-semibold'
+                : 'text-purple-200 hover:bg-purple-900/60'
             }`}
           >
             Índice
           </button>
 
-          <div className="h-3.5 sm:h-4 w-[1px] bg-rose-200 mx-0.5 sm:mx-1" />
+          <div className="h-3.5 sm:h-4 w-[1px] bg-purple-500/40 mx-0.5 sm:mx-1" />
 
           {story.months.map((m, idx) => {
             const pageNum = idx + 2;
@@ -1135,8 +1135,8 @@ export const LoveBook: React.FC<LoveBookProps> = ({
                 title={m.title}
                 className={`px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-medium transition-all shrink-0 flex items-center gap-1 cursor-pointer ${
                   isActive
-                    ? 'bg-rose-900 text-white shadow-xs font-semibold scale-105'
-                    : 'text-stone-600 hover:bg-rose-50'
+                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-sm font-semibold scale-105'
+                    : 'text-purple-200 hover:bg-purple-900/60'
                 }`}
               >
                 <span>M{m.monthNumber}</span>

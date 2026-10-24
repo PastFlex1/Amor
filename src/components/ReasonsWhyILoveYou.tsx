@@ -11,7 +11,6 @@ export const ReasonsWhyILoveYou: React.FC<ReasonsWhyILoveYouProps> = ({
   reasons,
   partnerName
 }) => {
-  // Set of revealed reason IDs
   const [revealedIds, setRevealedIds] = useState<Set<string>>(new Set([reasons[0]?.id || '']));
   const [shuffledReasons, setShuffledReasons] = useState<LoveReason[]>(reasons);
 
@@ -45,18 +44,18 @@ export const ReasonsWhyILoveYou: React.FC<ReasonsWhyILoveYouProps> = ({
   };
 
   return (
-    <section id="razones" className="py-20 px-6 max-w-5xl mx-auto">
+    <section id="razones" className="py-20 px-4 sm:px-6 max-w-5xl mx-auto relative z-10">
       {/* Header */}
       <div className="text-center space-y-3 mb-12">
-        <div className="flex items-center justify-center gap-2 text-xs font-semibold tracking-widest uppercase text-rose-800">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-950/60 border border-purple-500/30 text-xs font-semibold tracking-widest uppercase text-pink-300">
+          <Heart className="w-3.5 h-3.5 text-pink-400 fill-pink-400" />
           <span>Infinitos Motivos</span>
-          <span aria-hidden="true">·</span>
-          <span>Elegirte Siempre</span>
+          <Sparkles className="w-3.5 h-3.5 text-amber-300" />
         </div>
-        <h2 className="text-3xl sm:text-4xl font-serif-title font-bold text-stone-900 tracking-tight text-balance">
+        <h2 className="text-3xl sm:text-5xl font-serif-title font-bold text-white tracking-tight leading-tight text-balance">
           Razones por las que me enamoro de ti cada día
         </h2>
-        <p className="text-stone-600 text-sm max-w-md mx-auto">
+        <p className="text-slate-300 text-sm max-w-md mx-auto">
           Toca cada tarjeta para descubrir lo que despiertas en mi corazón.
         </p>
 
@@ -65,7 +64,7 @@ export const ReasonsWhyILoveYou: React.FC<ReasonsWhyILoveYouProps> = ({
           <button
             onClick={revealAll}
             type="button"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-white border border-rose-200 text-rose-900 hover:bg-rose-50 transition-colors"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-purple-950/70 border border-purple-500/30 text-pink-200 hover:bg-purple-900 transition-colors cursor-pointer"
           >
             {revealedIds.size === reasons.length ? (
               <>
@@ -83,7 +82,7 @@ export const ReasonsWhyILoveYou: React.FC<ReasonsWhyILoveYouProps> = ({
           <button
             onClick={handleShuffle}
             type="button"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-white border border-rose-200 text-rose-900 hover:bg-rose-50 transition-colors"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-purple-950/70 border border-purple-500/30 text-pink-200 hover:bg-purple-900 transition-colors cursor-pointer"
           >
             <Shuffle className="w-3.5 h-3.5" />
             <span>Mezclar</span>
@@ -102,41 +101,49 @@ export const ReasonsWhyILoveYou: React.FC<ReasonsWhyILoveYouProps> = ({
               onClick={() => toggleReason(reason.id)}
               role="button"
               tabIndex={0}
-              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') toggleReason(reason.id); }}
-              className={`cursor-pointer rounded-2xl p-6 transition-all duration-300 border flex flex-col justify-between min-h-[190px] focus:outline-none focus:ring-2 focus:ring-rose-400 ${
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') toggleReason(reason.id);
+              }}
+              className={`cursor-pointer rounded-2xl p-6 transition-all duration-300 border flex flex-col justify-between min-h-[190px] backdrop-blur-md ${
                 isRevealed
-                  ? 'bg-white border-rose-200 shadow-md transform -translate-y-0.5'
-                  : 'bg-rose-50/70 hover:bg-rose-100/70 border-rose-100 shadow-sm'
+                  ? 'bg-gradient-to-b from-[#1f0b3c]/90 via-[#150729]/90 to-[#0c0318]/95 border-pink-500/50 shadow-[0_0_25px_rgba(236,72,153,0.25)] transform -translate-y-1'
+                  : 'bg-purple-950/40 hover:bg-purple-900/40 border-purple-500/25 shadow-sm'
               }`}
             >
               <div className="space-y-3">
-                {/* Card Top Indicator */}
+                {/* Top Indicator */}
                 <div className="flex items-center justify-between text-xs">
-                  <span className="font-mono text-rose-800/80 font-medium tabular-nums">
+                  <span className="font-mono text-pink-300/80 font-medium tabular-nums">
                     Razón #{String(index + 1).padStart(2, '0')}
                   </span>
-                  <div className={`p-1.5 rounded-full ${isRevealed ? 'bg-rose-100 text-rose-700' : 'bg-white text-rose-400'}`}>
+                  <div
+                    className={`p-1.5 rounded-full ${
+                      isRevealed
+                        ? 'bg-pink-500/20 text-pink-300 border border-pink-400/30'
+                        : 'bg-purple-900/40 text-purple-400'
+                    }`}
+                  >
                     <Heart className="w-3.5 h-3.5 fill-current" />
                   </div>
                 </div>
 
-                <h3 className="font-serif-title text-xl font-bold text-stone-900">
+                <h3 className="font-serif-title text-xl font-bold text-white">
                   {reason.title}
                 </h3>
 
                 {isRevealed ? (
-                  <p className="text-stone-700 text-sm font-editorial leading-relaxed animate-fadeIn">
+                  <p className="text-slate-200 text-sm font-sans-body leading-relaxed animate-fadeIn">
                     {reason.description}
                   </p>
                 ) : (
-                  <p className="text-stone-400 text-xs italic font-editorial">
+                  <p className="text-purple-300/60 text-xs italic font-editorial">
                     (Toca para leer esta razón...)
                   </p>
                 )}
               </div>
 
-              <div className="pt-3 border-t border-rose-100/60 flex items-center justify-between text-[11px] text-rose-800/70">
-                <span>{partnerName}</span>
+              <div className="pt-3 border-t border-purple-500/20 flex items-center justify-between text-[11px] text-purple-300/80">
+                <span className="font-script text-base text-pink-300">{partnerName}</span>
                 <span>{isRevealed ? 'Guardada ♥' : 'Descubrir'}</span>
               </div>
             </div>
